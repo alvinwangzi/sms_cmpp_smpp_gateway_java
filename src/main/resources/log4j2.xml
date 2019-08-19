@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Properties>
+		<Property name="log-path">/data/logs/</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<Filters>
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} [%t] %-5level %class{36} Line:%L  - %msg%xEx%n"/>
+		</Console>
+		<!-- 短信提交PDU -->
+		<RollingFile name="submit_sm_pdu" fileName="${log-path}/submit_sm_pdu.log" filePattern="${log-path}/$${date:yyyy-MM-dd}/submit_sm_pdu-%d{yyyy-MM-dd}.log.gz">
+			<Filters>
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %-5level %class{36}.%M() Line:%L - %msg%xEx%n" />
+		</RollingFile>
+
+		<RollingFile name="info" fileName="${log-path}/info.log" filePattern="${log-path}/$${date:yyyy-MM-dd}/info-%d{yyyy-MM-dd}.log.gz">
+			<Filters>
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %-5level %class{36}.%M() Line:%L - %msg%xEx%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+
+		<RollingFile name="error" fileName="${log-path}/error.log" filePattern="${log-path}/$${date:yyyy-MM-dd}/error-%d{yyyy-MM-dd}.log.gz">
+			<Filters>
+				<ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %-5level %class{36}.%M() Line:%L - %msg%xEx%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<appender-ref ref="Console"/>
+			<appender-ref ref="info"/>
+			<appender-ref ref="error"/>
+		</Root>
+		<AsyncLogger name="submit_sm_pdu" additivity="false" level="debug">
+			<appender-ref ref="submit_sm_pdu" level="info"/>
+		</AsyncLogger>
+		<AsyncLogger name="info" additivity="false" level="info">
+			<appender-ref ref="info" level="info" />
+		</AsyncLogger>
+		<AsyncLogger name="error" additivity="false" level="info">
+			<appender-ref ref="error" level="info" />
+		</AsyncLogger>
+	</Loggers>
+</Configuration>
