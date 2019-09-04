@@ -40,7 +40,6 @@
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
-
 	</Appenders>
 	<Loggers>
 		<Root level="info">
